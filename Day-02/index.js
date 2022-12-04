@@ -45,3 +45,5 @@ const result = getPairs(data).map((round) => {
 });
 
 result.reduce((a, b) => a + b, 0);
+
+// https://adventofcode.com/2022/day/2
