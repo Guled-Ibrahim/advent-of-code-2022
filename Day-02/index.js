@@ -9,44 +9,39 @@ function getPairs(input) {
     .map((str) => str.split(" "));
 }
 
-const strategy = {
-  // Rock
-  A: {
-    hand: "X",
-    score: 1,
-    wins: "Z",
-    loses: "Y",
-  },
-  // Paper
-  B: {
-    hand: "Y",
-    score: 2,
-    wins: "X",
-    loses: "Z",
-  },
-  // Scissors
-  C: {
-    hand: "Z",
-    score: 3,
-    wins: "Y",
-    loses: "X",
-  },
+const shape = {
+  X: 1,
+  Y: 2,
+  Z: 3,
 };
 
-let total = null;
+const moves = {
+  A: "Rock",
+  B: "Paper",
+  C: "Scissors",
+  X: "Rock",
+  Y: "Paper",
+  Z: "Scissors",
+};
 
-getPairs(data).map((round) => {
-  if (strategy[round[0]].wins === round[1]) {
-    total += strategy[round[0]].score + 6;
+function score(opponentMove, ourMove) {
+  if (
+    (moves[opponentMove] === "Rock" && moves[ourMove] === "Paper") ||
+    (moves[opponentMove] === "Paper" && moves[ourMove] === "Scissors") ||
+    (moves[opponentMove] === "Scissors" && moves[ourMove] === "Rock")
+  ) {
+    return shape[ourMove] + 6;
   }
 
-  if (strategy[round[0]].hand === round[1]) {
-    total += strategy[round[0]].score + 3;
+  if (moves[opponentMove] === moves[ourMove]) {
+    return shape[ourMove] + 3;
   }
 
-  if (strategy[round[0]].loses === round[1]) {
-    total += strategy[round[0]].score;
-  }
+  return shape[ourMove];
+}
+
+const result = getPairs(data).map((round) => {
+  return score(round[0], round[1]);
 });
 
-console.log(total);
+result.reduce((a, b) => a + b, 0);
