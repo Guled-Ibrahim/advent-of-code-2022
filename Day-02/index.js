@@ -9,6 +9,68 @@ function getPairs(input) {
     .map((str) => str.split(" "));
 }
 
+const moves = {
+  A: "Rock",
+  B: "Paper",
+  C: "Scissors",
+};
+
+const win = {
+  A: moves["B"],
+  B: moves["C"],
+  C: moves["A"],
+};
+
+const lose = {
+  A: moves["C"],
+  B: moves["A"],
+  C: moves["B"],
+};
+
+const draw = {
+  A: moves["A"],
+  B: moves["B"],
+  C: moves["C"],
+};
+
+const shapePoint = {
+  Rock: 1,
+  Paper: 2,
+  Scissors: 3,
+};
+
+const outcomes = {
+  X: "lose",
+  Y: "draw",
+  Z: "win",
+};
+
+function getOutcome(strategyMove, move) {
+  if (strategyMove === "win") return win[move];
+  if (strategyMove === "lose") return lose[move];
+  if (strategyMove === "draw") return draw[move];
+}
+
+function score(opponentMove, ourMove) {
+  if (outcomes[ourMove] === "win") {
+    return shapePoint[getOutcome("win", opponentMove)] + 6;
+  }
+
+  if (outcomes[ourMove] === "draw") {
+    return shapePoint[getOutcome("draw", opponentMove)] + 3;
+  }
+
+  if (outcomes[ourMove] === "lose") {
+    return shapePoint[getOutcome("lose", opponentMove)];
+  }
+}
+
+const part2 = getPairs(data)
+  .map((round) => {
+    return score(round[0], round[1]);
+  })
+  .reduce((a, b) => a + b, 0);
+
 const shape = {
   X: 1,
   Y: 2,
@@ -40,10 +102,8 @@ function score(opponentMove, ourMove) {
   return shape[ourMove];
 }
 
-const result = getPairs(data).map((round) => {
+const part1 = getPairs(data).map((round) => {
   return score(round[0], round[1]);
 });
 
 result.reduce((a, b) => a + b, 0);
-
-// https://adventofcode.com/2022/day/2
